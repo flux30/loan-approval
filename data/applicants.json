@@ -1,0 +1,54 @@
+{
+  "applicants": [
+    {
+      "applicant_id": "A1",
+      "income": 70000,
+      "credit_score": 760,
+      "employment_status": "Employed",
+      "employment_duration": 5,
+      "age": 30,
+      "dependents": 2,
+      "existing_debt": "Low"
+    },
+    {
+      "applicant_id": "A2",
+      "income": 50000,
+      "credit_score": 720,
+      "employment_status": "Employed",
+      "employment_duration": 2,
+      "age": 25,
+      "dependents": 1,
+      "existing_debt": "None"
+    },
+    {
+      "applicant_id": "A3",
+      "income": 35000,
+      "credit_score": 640,
+      "employment_status": "Employed",
+      "employment_duration": 0.5,
+      "age": 23,
+      "dependents": 4,
+      "existing_debt": "Medium"
+    },
+    {
+      "applicant_id": "A4",
+      "income": 20000,
+      "credit_score": 580,
+      "employment_status": "Employed",
+      "employment_duration": 3,
+      "age": 22,
+      "dependents": 2,
+      "existing_debt": "High"
+    },
+    {
+      "applicant_id": "A5",
+      "income": 55000,
+      "credit_score": 680,
+      "employment_status": "Unemployed",
+      "employment_duration": 0,
+      "age": 28,
+      "dependents": 2,
+      "existing_debt": "Low"
+    }
+  ]
+}

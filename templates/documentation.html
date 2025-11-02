@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Rule-Based Expert System</title>
+    
+    <!-- Lexend Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo-icon">⚖️</span>
+                <span class="logo-text">LoanExpert AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/analysis" class="nav-link">Analysis</a></li>
+                <li><a href="/documentation" class="nav-link active">Docs</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 60vh; padding-top: 150px;">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="gradient-text">Documentation</span>
+            </h1>
+            <p class="hero-subtitle">
+                Complete API reference, setup guide, and usage examples
+            </p>
+        </div>
+    </section>
+
+    <!-- Documentation Sections -->
+    <section class="documentation">
+        <div class="doc-container">
+            <!-- Getting Started -->
+            <div class="doc-section">
+                <h2>Getting Started</h2>
+                
+                <h3>Installation</h3>
+                <pre><code>cd ai_project3
+pip install -r requirements.txt</code></pre>
+
+                <h3>Running the Application</h3>
+                <pre><code>python app.py</code></pre>
+                <p>The application will start at <code>http://localhost:5000</code></p>
+
+                <h3>Project Structure</h3>
+                <pre><code>ai_project3/
+├── app.py                 # Main Flask application
+├── config.py              # Configuration settings
+├── engine/                # Core inference engine
+│   ├── rule_engine.py     # Main engine orchestrator
+│   ├── rule_base.py       # Knowledge base
+│   ├── forward_chaining.py
+│   ├── backward_chaining.py
+│   └── conflict_resolver.py
+├── models/                # Data models
+│   ├── applicant.py
+│   └── rule.py
+├── utils/                 # Utility functions
+│   └── trace_logger.py
+├── data/                  # Data files
+│   └── applicants.json
+├── templates/             # HTML templates
+├── static/                # CSS, JavaScript
+└── tests/                 # Unit tests</code></pre>
+            </div>
+
+            <!-- API Reference -->
+            <div class="doc-section">
+                <h2>API Reference</h2>
+
+                <div class="api-endpoint">
+                    <h3>POST /api/evaluate</h3>
+                    <p><strong>Description:</strong> Evaluate a single applicant</p>
+                    
+                    <h4>Request Body:</h4>
+                    <pre><code>{
+  "applicant_id": "A1",
+  "income": 70000,
+  "credit_score": 760,
+  "employment_status": "Employed",
+  "employment_duration": 5,
+  "age": 30,
+  "dependents": 2,
+  "existing_debt": "Low"
+}</code></pre>
+
+                    <h4>Response:</h4>
+                    <pre><code>{
+  "success": true,
+  "data": {
+    "applicant_id": "A1",
+    "final_decision": "Approve Loan",
+    "forward_chaining": {
+      "decision": "Approve Loan",
+      "trace": [...]
+    },
+    "backward_chaining": {
+      "decision": "Approve Loan",
+      "trace": [...]
+    }
+  }
+}</code></pre>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>GET /api/evaluate-all</h3>
+                    <p><strong>Description:</strong> Evaluate all applicants in dataset</p>
+                    
+                    <h4>Response:</h4>
+                    <pre><code>{
+  "success": true,
+  "data": [...],
+  "statistics": {
+    "total_applicants": 5,
+    "decisions": {
+      "Approve Loan": 1,
+      "Manual Review": 2,
+      "Reject Loan": 2
+    }
+  }
+}</code></pre>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>GET /api/applicants</h3>
+                    <p><strong>Description:</strong> Get all applicants from dataset</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>GET /api/rules</h3>
+                    <p><strong>Description:</strong> Get all rules in knowledge base</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>GET /api/rule/&lt;rule_id&gt;</h3>
+                    <p><strong>Description:</strong> Get specific rule by ID</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>GET /api/statistics</h3>
+                    <p><strong>Description:</strong> Get system statistics</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3>POST /api/change-strategy</h3>
+                    <p><strong>Description:</strong> Change conflict resolution strategy</p>
+                    
+                    <h4>Request Body:</h4>
+                    <pre><code>{
+  "strategy": "priority_specificity"
+}</code></pre>
+                    
+                    <h4>Available Strategies:</h4>
+                    <ul>
+                        <li><code>priority</code> - Higher priority rules win</li>
+                        <li><code>specificity</code> - More specific rules win</li>
+                        <li><code>priority_specificity</code> - Combined strategy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Rule Format -->
+            <div class="doc-section">
+                <h2>Rule Format</h2>
+                <p>Rules in the knowledge base follow this format:</p>
+                
+                <pre><code>Rule {
+    rule_id: str          # Unique identifier (e.g., 'R1')
+    description: str      # Human-readable description
+    antecedents: list     # IF conditions
+    consequent: str       # THEN conclusion
+    priority: str         # High, Medium, Low
+    specificity: int      # Higher = more specific (1-3)
+}</code></pre>
+
+                <h3>Example Rule</h3>
+                <pre><code>R1: High income (>60K) AND excellent credit (>750)
+    → Approve Loan
+    Priority: High (3)
+    Specificity: 2</code></pre>
+            </div>
+
+            <!-- Using the Engine -->
+            <div class="doc-section">
+                <h2>Using the Engine Programmatically</h2>
+
+                <h3>Python Example</h3>
+                <pre><code>from engine.rule_engine import RuleEngine
+from models.applicant import Applicant
+
+# Initialize engine
+engine = RuleEngine(chaining_type='both')
+
+# Create applicant
+applicant = Applicant(
+    applicant_id='TEST1',
+    income=70000,
+    credit_score=760,
+    employment_status='Employed',
+    employment_duration=5,
+    age=30,
+    dependents=2,
+    existing_debt='Low'
+)
+
+# Evaluate
+result = engine.evaluate_applicant(applicant)
+print(f"Decision: {result['final_decision']}")
+print(f"Trace: {result['forward_chaining']['trace']}")</code></pre>
+
+                <h3>JavaScript Example (Frontend)</h3>
+                <pre><code>async function evaluateApplicant(applicantData) {
+    const response = await fetch('http://localhost:5000/api/evaluate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(applicantData)
+    });
+    
+    const result = await response.json();
+    return result.data;
+}</code></pre>
+            </div>
+
+            <!-- Decision Criteria -->
+            <div class="doc-section">
+                <h2>Decision Criteria</h2>
+
+                <div class="criteria-table">
+                    <h3>Rule 1: Approve Loan</h3>
+                    <pre><code>IF income > 60,000 AND credit_score > 750
+THEN Approve Loan
+Priority: High, Specificity: 2</code></pre>
+
+                    <h3>Rule 2: Approve with Conditions</h3>
+                    <pre><code>IF 40,000 ≤ income ≤ 60,000 AND credit_score > 700 AND existing_debt = None
+THEN Approve with Conditions
+Priority: Medium, Specificity: 3</code></pre>
+
+                    <h3>Rule 3: Reject Loan</h3>
+                    <pre><code>IF credit_score ≤ 650 AND existing_debt = High
+THEN Reject Loan
+Priority: High, Specificity: 2</code></pre>
+
+                    <h3>Rule 4: Reject Loan</h3>
+                    <pre><code>IF employment_status = Unemployed
+THEN Reject Loan
+Priority: High, Specificity: 1</code></pre>
+
+                    <h3>Rule 5: Manual Review</h3>
+                    <pre><code>IF 30,000 ≤ income ≤ 50,000 AND 600 ≤ credit_score ≤ 700
+THEN Manual Review
+Priority: Low, Specificity: 2</code></pre>
+
+                    <h3>Rule 6: Reject Loan</h3>
+                    <pre><code>IF age < 21
+THEN Reject Loan
+Priority: High, Specificity: 1</code></pre>
+
+                    <h3>Rule 7: Manual Review</h3>
+                    <pre><code>IF dependents > 3 AND income < 45,000
+THEN Manual Review
+Priority: Low, Specificity: 2</code></pre>
+
+                    <h3>Rule 8: Manual Review</h3>
+                    <pre><code>IF employment_duration < 1 year AND credit_score < 700
+THEN Manual Review
+Priority: Low, Specificity: 2</code></pre>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="doc-section">
+                <h2>Troubleshooting</h2>
+
+                <h3>Issue: ModuleNotFoundError for flask</h3>
+                <p><strong>Solution:</strong> Install required packages</p>
+                <pre><code>pip install -r requirements.txt</code></pre>
+
+                <h3>Issue: Port 5000 already in use</h3>
+                <p><strong>Solution:</strong> Change port in config.py or kill process</p>
+                <pre><code>lsof -i :5000
+kill -9 <PID></code></pre>
+
+                <h3>Issue: CORS errors in browser</h3>
+                <p><strong>Solution:</strong> Flask-CORS is already configured. Ensure you're accessing from allowed domain.</p>
+
+                <h3>Issue: Rules not firing correctly</h3>
+                <p><strong>Solution:</strong> Check applicant data types and rule conditions. View trace in UI for debugging.</p>
+            </div>
+
+            <!-- Configuration -->
+            <div class="doc-section">
+                <h2>Configuration</h2>
+
+                <p>Edit <code>config.py</code> to customize:</p>
+
+                <pre><code>class Config:
+    # Flask settings
+    DEBUG = True
+    HOST = '0.0.0.0'
+    PORT = 5000
+    
+    # Inference strategy
+    CONFLICT_RESOLUTION_STRATEGY = 'priority_specificity'
+    
+    # Logging
+    ENABLE_TRACE_LOGGING = True
+    MAX_TRACE_DEPTH = 50
+    
+    # Decisions
+    DECISIONS = ['Approve Loan', 'Approve with Conditions', 
+                 'Reject Loan', 'Manual Review']</code></pre>
+            </div>
+
+            <!-- Performance Tips -->
+            <div class="doc-section">
+                <h2>Performance Tips</h2>
+
+                <ul>
+                    <li><strong>Batch Evaluation:</strong> Use /api/evaluate-all for multiple applicants</li>
+                    <li><strong>Caching:</strong> Cache rule evaluations for identical applicants</li>
+                    <li><strong>Trace Limiting:</strong> Reduce MAX_TRACE_DEPTH for faster inference</li>
+                    <li><strong>Rule Ordering:</strong> Order rules by likelihood to match first</li>
+                </ul>
+            </div>
+
+            <!-- Contributing -->
+            <div class="doc-section">
+                <h2>Contributing</h2>
+
+                <h3>Adding New Rules</h3>
+                <ol>
+                    <li>Edit <code>engine/rule_base.py</code></li>
+                    <li>Add rule to <code>_initialize_rules()</code></li>
+                    <li>Test with sample applicants</li>
+                    <li>Update documentation</li>
+                </ol>
+
+                <h3>Code Style</h3>
+                <ul>
+                    <li>Follow PEP 8 for Python</li>
+                    <li>Use descriptive variable names</li>
+                    <li>Add docstrings to functions</li>
+                    <li>Use type hints</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Documentation</h4>
+                <p>Complete reference for LoanExpert AI</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/analysis">Analysis</a></li>
+                    <li><a href="/documentation">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li>API Reference</li>
+                    <li>Setup Guide</li>
+                    <li>Examples</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LoanExpert AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AnimationUtils.fadeInOnLoad();
+        });
+    </script>
+</body>
+</html>
+
+<style>
+    .documentation {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+        background: linear-gradient(180deg, rgba(26, 26, 46, 0.5) 0%, rgba(22, 33, 62, 0.5) 100%);
+    }
+
+    .doc-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .doc-section {
+        margin-bottom: var(--spacing-2xl);
+        padding: var(--spacing-lg);
+        background: rgba(22, 33, 62, 0.6);
+        border-left: 4px solid var(--text-accent);
+        border-radius: var(--radius-lg);
+        backdrop-filter: blur(10px);
+    }
+
+    .doc-section h2 {
+        color: var(--text-accent);
+        margin-bottom: var(--spacing-lg);
+        font-size: 1.75rem;
+    }
+
+    .doc-section h3 {
+        color: var(--text-primary);
+        margin-top: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        font-size: 1.25rem;
+    }
+
+    .doc-section h4 {
+        color: var(--text-secondary);
+        margin-top: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .doc-section p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-md);
+        line-height: 1.8;
+    }
+
+    .doc-section pre {
+        background: rgba(10, 10, 20, 0.8);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        overflow-x: auto;
+        margin-bottom: var(--spacing-md);
+        font-size: 0.9rem;
+    }
+
+    .doc-section code {
+        color: #00d4aa;
+        font-family: 'Courier New', monospace;
+        background: rgba(102, 126, 234, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .doc-section pre code {
+        background: none;
+        padding: 0;
+        color: #00d4aa;
+    }
+
+    .doc-section ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .doc-section li {
+        padding-left: 2rem;
+        position: relative;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-secondary);
+    }
+
+    .doc-section li:before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--text-accent);
+        font-weight: 700;
+    }
+
+    .doc-section ol {
+        padding-left: 2rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .doc-section ol li {
+        padding-left: 0;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-secondary);
+    }
+
+    .doc-section ol li:before {
+        content: '';
+    }
+
+    .api-endpoint {
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .api-endpoint h3 {
+        color: var(--text-accent);
+        margin-top: 0;
+        font-family: 'Courier New', monospace;
+    }
+
+    .api-endpoint h4 {
+        color: var(--text-primary);
+        margin-top: var(--spacing-md);
+    }
+
+    .criteria-table {
+        display: grid;
+        gap: var(--spacing-md);
+    }
+
+    .criteria-table h3 {
+        margin-top: 0;
+    }
+</style>
